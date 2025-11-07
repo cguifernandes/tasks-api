@@ -1,0 +1,47 @@
+### Registrar usuário
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "name": "usuario1",
+  "password": "senha123"
+}
+
+### Registrar usuário já existente (erro)
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "name": "usuario1",
+  "password": "senha123"
+}
+
+### Login usuário (sucesso)
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "name": "usuario1",
+  "password": "senha123"
+}
+
+### Login usuário (senha errada)
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "name": "usuario1",
+  "password": "errada"
+}
+
+### Login usuário (usuário não existe)
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "name": "naoexiste",
+  "password": "qualquer"
+}
+
+# Para testar os endpoints de buscar usuários, atualizar e deletar, inclua endpoints caso estejam implementados,
+# por exemplo, GET /users, GET /users/:id, PUT /users/:id, DELETE /users/:id.

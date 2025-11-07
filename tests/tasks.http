@@ -1,0 +1,67 @@
+### Listar todas as tarefas (público)
+GET http://localhost:8080/tasks/
+
+###
+
+### Criar uma nova tarefa (protegido - requer JWT)
+POST http://localhost:8080/tasks/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Estudar Golang",
+  "description": "Praticar API com Gin"
+}
+
+###
+
+### Criar tarefa com dados inválidos (protegido - requer JWT)
+POST http://localhost:8080/tasks/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "description": "Praticar API com Gin"
+}
+
+###
+
+### Buscar uma tarefa pelo ID (protegido - requer JWT, troque {{id}} e {{token}})
+GET http://localhost:8080/tasks/{{id}}
+Authorization: Bearer {{token}}
+
+###
+
+### Atualizar uma tarefa (protegido - requer JWT, troque {{id}} e {{token}})
+PUT http://localhost:8080/tasks/{{id}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Título atualizado",
+  "description": "Descrição atualizada"
+}
+
+###
+
+### Atualizar tarefa inexistente (protegido - requer JWT)
+PUT http://localhost:8080/tasks/nao-existe
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Teste erro",
+  "description": "Task não existe"
+}
+
+###
+
+### Deletar uma tarefa (protegido - requer JWT, troque {{id}} e {{token}})
+DELETE http://localhost:8080/tasks/{{id}}
+Authorization: Bearer {{token}}
+
+###
+
+### Deletar tarefa inexistente (protegido - requer JWT)
+DELETE http://localhost:8080/tasks/nao-existe
+Authorization: Bearer {{token}}
