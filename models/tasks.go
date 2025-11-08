@@ -17,6 +17,8 @@ type Task struct {
 	Title       string    `json:"title" validate:"required,max=255" gorm:"size:255;not null"` // Título da tarefa (obrigatório)
 	Description string    `json:"description" validate:"required,max=500" gorm:"size:500"`    // Descrição detalhada (obrigatória)
 	Completed   bool      `json:"completed" gorm:"not null;default:false"`                    // Status de concluída
+	UserID      string    `json:"user_id,omitempty" gorm:"type:varchar(36)"`                  // ID do usuário que criou a task
+	User        *User     `json:"user,omitempty" gorm:"foreignKey:UserID"`                    // Relação com o usuário
 	CreatedAt   time.Time `json:"created_at" gorm:"autoCreateTime"`                           // Data/hora de criação
 }
 
@@ -50,19 +52,19 @@ func (t *Task) DeleteTask(db *gorm.DB) error {
 	return db.Delete(t).Error
 }
 
-// Recupera todas as tarefas cadastradas
+// Recupera todas as tarefas cadastradas com informações do usuário
 func GetAllTasks(db *gorm.DB) ([]Task, error) {
 	var tasks []Task
-	if err := db.Find(&tasks).Error; err != nil {
+	if err := db.Preload("User").Find(&tasks).Error; err != nil {
 		return nil, err
 	}
 	return tasks, nil
 }
 
-// Busca uma tarefa por ID (retorna erro se não encontrar)
+// Busca uma tarefa por ID (retorna erro se não encontrar) com informações do usuário
 func GetTaskById(db *gorm.DB, id string) (*Task, error) {
 	var task Task
-	if err := db.First(&task, "id = ?", id).Error; err != nil {
+	if err := db.Preload("User").First(&task, "id = ?", id).Error; err != nil {
 		return nil, err
 	}
 	return &task, nil

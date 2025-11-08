@@ -93,6 +93,6 @@ func RegisterAuthRoutes(router *gin.Engine, db *gorm.DB) {
 		}
 
 		// Devolve o token para o frontend usar nas ações protegidas
-		c.JSON(http.StatusOK, gin.H{"token": token, "message": "Login realizado com sucesso!", "ok": true})
+		c.JSON(http.StatusOK, gin.H{"token": token, "user": existing, "message": "Login realizado com sucesso!", "ok": true})
 	})
 }

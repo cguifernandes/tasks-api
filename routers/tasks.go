@@ -11,7 +11,7 @@ import (
 )
 
 // RegisterRoutes gerencia todas as rotas de tarefa
-func RegisterRoutes(router *gin.Engine, db *gorm.DB) {
+func RegisterTasksRoutes(router *gin.Engine, db *gorm.DB) {
 	// Cria um grupo para todas as rotas de /tasks
 	tasksGroup := router.Group("/tasks")
 
@@ -34,6 +34,15 @@ func RegisterRoutes(router *gin.Engine, db *gorm.DB) {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "Dados inválidos: " + err.Error(), "ok": false})
 			return
 		}
+
+		// Pega o user_id do contexto (definido pelo middleware JWT)
+		userID, exists := c.Get("user_id")
+		if !exists {
+			c.JSON(http.StatusUnauthorized, gin.H{"message": "Usuário não autenticado", "ok": false})
+			return
+		}
+		task.UserID = userID.(string)
+
 		if err := task.SaveTask(db); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": "Erro ao salvar a tarefa: " + err.Error(), "ok": false})
 			return

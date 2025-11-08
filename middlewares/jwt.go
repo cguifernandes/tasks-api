@@ -21,15 +21,23 @@ func AuthMiddleware() gin.HandlerFunc {
 		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
 		secret := os.Getenv("JWT_SECRET")
 
-		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-			return []byte(secret), nil
-		})
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(secret), nil
+	})
 
-		if err != nil || !token.Valid {
-			c.JSON(http.StatusUnauthorized, gin.H{"message": "Token inválido ou expirado", "ok": false})
-			c.Abort()
-			return
+	if err != nil || !token.Valid {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Token inválido ou expirado", "ok": false})
+		c.Abort()
+		return
+	}
+
+	// Extrai o user_id do token e salva no contexto
+	if claims, ok := token.Claims.(jwt.MapClaims); ok {
+		if userID, exists := claims["user_id"]; exists {
+			c.Set("user_id", userID)
 		}
-		c.Next()
+	}
+
+	c.Next()
 	}
 }

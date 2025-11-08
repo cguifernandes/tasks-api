@@ -6,6 +6,7 @@ import (
 	"example/tasks-api/models"
 	"example/tasks-api/routers"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -34,8 +35,22 @@ func main() {
 	// Cria o router principal do Gin
 	router := gin.Default()
 
+	// Configura CORS para permitir requisições de outras origens
+	router.Use(cors.New(cors.Config{
+		AllowOrigins: []string{
+			"http://localhost:3000",
+			"http://localhost:5173",
+			"http://127.0.0.1:5500",
+			"http://localhost:8000",
+		},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
+
 	// Aponta rotas de tasks e autenticação
-	routers.RegisterRoutes(router, db)
+	routers.RegisterTasksRoutes(router, db)
 	routers.RegisterAuthRoutes(router, db)
 
 	// Sobe a API na porta 8080

@@ -15,7 +15,7 @@ import (
 type User struct {
 	ID        string    `json:"id" gorm:"primaryKey;type:varchar(36);unique;not null"`            // UUID gerado automaticamente
 	Name      string    `json:"name" validate:"required,max=255" gorm:"size:255;not null;unique"` // Nome de usuário (único e obrigatório)
-	Password  string    `json:"password" validate:"required,max=255" gorm:"size:255;not null"`    // Senha (armazenada como hash, nunca puro)
+	Password  string    `json:"-" validate:"required,max=255" gorm:"size:255;not null"`           // Senha (armazenada como hash, nunca exposta no JSON)
 	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`                                 // Data/hora do cadastro
 }
 
