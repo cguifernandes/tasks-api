@@ -71,11 +71,4 @@ Use os arquivos em `tests/tasks.http` e `tests/users.http` com o plugin [REST Cl
 
 ---
 
-## 🛠️ Para contribuir
-1. Fork esse repositório, crie sua branch e envie PRs;
-2. Siga o padrão de mensagens de commit e mantenha os comentários claros;
-3. Se encontrar bug, crie um teste `.http` para reproduzir.
-
----
-
 Projeto criado para estudos e estruturação de boas práticas em backend Go — fique à vontade para usar, sugerir melhorias ou adaptar ao seu contexto!
